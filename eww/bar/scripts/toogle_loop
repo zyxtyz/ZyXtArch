@@ -1,0 +1,18 @@
+#!/bin/sh 
+
+status=$(playerctl loop status 2>/dev/null)
+
+case "$status" in
+    None)
+        playerctl loop all
+        ;;
+    Track)
+        playerctl loop none
+        ;;
+    Playlist)
+        playerctl loop track
+        ;;
+    *)
+        playerctl loop none
+        ;;
+esac

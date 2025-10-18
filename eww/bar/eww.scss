@@ -1,0 +1,11 @@
+@import "../../pywal/colors.scss"
+* {
+    all:unset;
+}
+
+.bar {
+    background-color: $background;
+    color: $foreground;
+    
+}
+

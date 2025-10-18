@@ -1,0 +1,21 @@
+set $wallpaper /home/zyxtyz/.config/zyxtyz/wallpapers/rain_outside.jpg
+
+set $background #0d151f
+set $foreground #c2c4c7
+
+set $color0 #0d151f
+set $color1 #445293
+set $color2 #4B5A9C
+set $color3 #54788F
+set $color4 #5D839B
+set $color5 #61869D
+set $color6 #678CA2
+set $color7 #c2c4c7
+set $color8 #5c6571
+set $color9 #445293
+set $color10 #4B5A9C
+set $color11 #54788F
+set $color12 #5D839B
+set $color13 #61869D
+set $color14 #678CA2
+set $color15 #c2c4c7

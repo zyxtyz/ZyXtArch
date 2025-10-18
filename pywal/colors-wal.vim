@@ -1,0 +1,23 @@
+" Special
+let wallpaper  = "/home/zyxtyz/.config/zyxtyz/wallpapers/rain_outside.jpg"
+let background = "#0d151f"
+let foreground = "#c2c4c7"
+let cursor     = "#c2c4c7"
+
+" Colors
+let color0  = "#0d151f"
+let color1  = "#445293"
+let color2  = "#4B5A9C"
+let color3  = "#54788F"
+let color4  = "#5D839B"
+let color5  = "#61869D"
+let color6  = "#678CA2"
+let color7  = "#c2c4c7"
+let color8  = "#5c6571"
+let color9  = "#445293"
+let color10 = "#4B5A9C"
+let color11 = "#54788F"
+let color12 = "#5D839B"
+let color13 = "#61869D"
+let color14 = "#678CA2"
+let color15 = "#c2c4c7"
