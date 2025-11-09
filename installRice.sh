@@ -38,6 +38,5 @@ sudo cp tui-pacman /bin
 echo "installing packages"
 paru -S flameshot fzf neovim cava kitty wallust-git xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh 
 
-echo "wanna reboot? > y/n"
-a=$(read)
+reboot
 
