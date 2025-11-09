@@ -1,0 +1,102 @@
+#!/bin/sh
+
+# =====================================================================
+#    __________       ____  ___ __     _____                .__     
+#    \____    /___.__.\   \/  //  |_  /  _  \_______   ____ |  |__  
+#      /     /<   |  | \     /\   __\/  /_\  \_  __ \_/ ___\|  |  \ 
+#     /     /_ \___  | /     \ |  | /    |    \  | \/\  \___|   Y  \
+#    /_______ \/ ____|/___/\  \|__| \____|__  /__|    \___  >___|  /
+#            \/\/           \_/             \/            \/     \/ 
+#
+#	Author: Zyxtyz
+#	Repo: https://github.com/zyxtyz/ZyXtArch
+#
+# =====================================================================
+
+ZYXTARCH_DIR="$HOME/.config/zyxtarch"
+source "$ZYXTARCH_DIR"/colors/colors.sh
+# ---------------------------------------------------------------------
+# Open config files
+# ---------------------------------------------------------------------
+edit() {
+	cat <<EOF
+================================================
+1) EWW
+2) BSPWM
+3) ZSH
+================================================
+EOF
+
+	read -p "> " answer
+
+	case "$answer" in
+		1) nvim "$ZYXTARCH_DIR/eww" ;;
+		2) nvim "$ZYXTARCH_DIR/bspwm" ;;
+		3) nvim "$ZYXTARCH_DIR/zsh" ;;
+		*) nvim "$ZYXTARCH_DIR" ;;
+	esac
+}
+
+# ---------------------------------------------------------------------
+# Apply wallpaper + pywal theme
+# ---------------------------------------------------------------------
+applywal() {
+	if [ -z "$1" ]; then
+        echo "Usage: rice wal <image-path>"
+        return 1
+    fi
+
+    # If relative path, make it absolute
+    image="$(realpath "$1" 2>/dev/null || echo "$1")"
+
+    if [ ! -f "$image" ]; then
+        echo "❌ File not found: $image"
+        return 1
+    fi
+
+    WALLUST_config_FILE="$ZYXTARCH_DIR"/wallust/config.toml
+    WALLUST_TEMPLATES="$ZYXTARCH_DIR"/wallust/templates
+    WALLUST_CONFIG="$ZYXTARCH_DIR"/wallust
+
+    feh --bg-fill "$image"
+    wallust run "$image" -d $WALLUST_CONFIG 
+    bspc config normal_border_color "$color1"
+    bspc config active_border_color "$color2"
+    bspc config focused_border_color "$color15"
+}
+
+# ---------------------------------------------------------------------
+# Main script logic
+# ---------------------------------------------------------------------
+if [ -z "$1" ]; then
+	echo "Usage: rice <option> [argument (for wal)]"
+	exit 1
+fi
+
+case "$1" in
+	-h | --help) cat <<EOF
+
+	Usage: rice <option> [argument if needed]
+
+	options:
+	  [
+	  	edit
+		wal
+	  ]
+	arguments:
+	  [
+		wal <wallpaper>
+	  ]
+EOF
+;;
+	edit)
+		edit
+		;;
+	wal)
+		applywal "$2"
+		;;
+	*)
+		echo "Unknown option: $1"
+		echo "Available options: edit, wal"
+		;;
+esac

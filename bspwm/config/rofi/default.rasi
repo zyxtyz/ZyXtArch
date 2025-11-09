@@ -1,0 +1,40 @@
+@import "../../../pywal/colors-rofi-dark-rasi"
+
+
+
+configuration {
+    show-icons: true;
+}
+
+* {
+    border: 0;
+    border-radius: 10px;
+    background-color: @background;
+    text-color: @foreground;
+    selected-background: @color1;
+    selected-foreground: @background;
+    spacing: 4px;
+}
+
+window {
+    width: 40%;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+listview {
+    fixed-height: false;
+    scrollbar: true;
+    spacing: 6px;
+    lines: 10;
+}
+
+element {
+    padding: 6px;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: @color2;
+    text-color: @background;
+}

@@ -1,0 +1,54 @@
+#!/bin/sh
+
+#source ~/.config/zyxtarch/pywal/colors.sh
+
+#==============================================================================
+#    __________  ___________________  _____  __      _____________________  
+#    \______   \/   _____/\______   \/     \/  \    /  \______   \_   ___ \ 
+#     |    |  _/\_____  \  |     ___/  \ /  \   \/\/   /|       _/    \  \/ 
+#     |    |   \/        \ |    |  /    Y    \        / |    |   \     \____
+#     |______  /_______  / |____|  \____|__  /\__/\  /  |____|_  /\______  /
+#            \/        \/                  \/      \/          \/        \/
+# Author: Zyxtyz
+# Github Repo: https://github.com/zyxtyz/ZyXtArch
+# Last Update: 06.11.2025 19:08:37
+#
+#
+#==============================================================================
+
+
+
+# Set environment variables
+export WALLUST_CACHE="$HOME/.config/zyxtarch/colors"
+export WALLUST_DIR="$HOME/.config/zyxtarch/wallust"
+export BSPWM_BIN="$HOME/.config/zyxtarch/bspwm/bin"
+export BSPWM_CONFIG="$HOME/.config/zyxtarch/bspwm/config"
+export PATH="$BSPWM_BIN:$PATH"
+export _JAVA_AWT_WM_NONREPARENTING=1
+
+# Source the colors
+source "$WALLUST_CACHE"/colors.sh
+# Set Wallpaper
+ feh --bg-fill $wallpaper
+
+
+
+pgrep -x sxhkd > /dev/null || sxhkd -c ~/.config/zyxtarch/bspwm/sxhkdrc &
+
+bspc monitor -d 1 2 3 4 5 6 7 8 9 10
+
+bspc config focus_follows_pointer true
+
+
+bspc config border_width         2
+bspc config window_gap          12
+
+bspc config split_ratio          0.52
+bspc config borderless_monocle   true
+bspc config gapless_monocle      true
+
+#bspc config normal_border_color "$color1"
+#bspc config active_border_color "$color2"
+#bspc config focused_border_color "$color15"
+
+

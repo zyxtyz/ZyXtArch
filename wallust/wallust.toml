@@ -1,0 +1,35 @@
+#    color0
+#    color1
+#    color2
+#    color3
+#    color4
+#    color5
+#    color6
+#    color7
+#    color8
+#    color9
+#    color10
+#    color11
+#    color12
+#    color13
+#    color14
+#    color15
+#    background
+#    foreground
+#    cursor
+#    wallpaper
+
+[general]
+backend = "wal"
+
+[templates.colors]
+template = "colors.sh"
+target = "~/.config/zyxtarch/colors/colors.sh"
+
+[templates.vesktop]
+template = "vesktop.css"
+target = "~/.config/legcord/quickCss.css"
+
+[templates.kitty]
+template = "colors-kitty.conf"
+target = "~/.config/kitty/kitty.conf"

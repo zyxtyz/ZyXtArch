@@ -1,0 +1,84 @@
+#
+# wm independent hotkeys
+#
+
+# terminal emulator
+super + Return
+	kitty
+
+# program launcher
+super + r
+	rofi -show drun -c $BSPWM_CONFIG/default.rasi
+
+# browser
+super + b
+	firefox
+
+# file manager
+super + n
+	dolphin
+
+# discord
+super + d
+	legcord
+
+# spotify
+ctrl + shift + m
+	spotify
+
+# screenshot
+super + shift + s
+	flameshot gui
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+
+# quit bspwm
+super + Delete
+	bspc quit
+
+# close window
+super + k
+	bspc node -c
+
+# kill window
+super + shift + k
+	bspc node -k
+
+# fullscreen
+super + f
+	bspc node -t '~fullscreen'
+
+# toggle floating
+super + v
+	bspc node -t '~floating'
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction (arrow keys)
+super + {Left,Down,Up,Right}
+	bspc node -f {west,south,north,east}
+
+# Switch desktop
+super + {1-9,0}
+    bspc desktop -f "^{1-9,10}"
+
+# Move focused node AND follow
+super + shift + {1-9,0}
+    bash -c 'desk="^{1-9,10}"; bspc node -d "$desk" && bspc desktop -f "$desk"'
+
+
+
+# Audio controls
+XF86AudioRaiseVolume
+	wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+
+XF86AudioLowerVolume
+	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
