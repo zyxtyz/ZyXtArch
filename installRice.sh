@@ -1,13 +1,14 @@
-#!/bin/sh
-set -e  # Exit immediately on any error
+#!/bin/sh  # Exit immediately on any error
 
 echo "==> Installing git and required packages..."
 sudo pacman -S --noconfirm --needed git bspwm sxhkd
 
 echo "==> Cloning ZyXtArch repo..."
 cd "$HOME"
+
 git clone https://github.com/zyxtyz/ZyXtArch
-mv "$HOME/Zyxtyz/ZyXtArch" "$HOME/.config/zyxtarch"
+mkdir ~/.config
+mv "$HOME/ZyXtArch" "$HOME/.config/zyxtarch"
 
 echo "==> Creating bspwm-zyxtarch session file..."
 sudo mkdir -p /usr/share/xsessions/
