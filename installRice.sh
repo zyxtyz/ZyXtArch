@@ -1,42 +1,42 @@
-echo "installing git and other requires packages"
-sudo pacman -S git bspwm sxhkd
+#!/bin/bash
+set -e  # Exit immediately on any error
 
-cd $HOME
-echo "Cloning repo"
+echo "==> Installing git and required packages..."
+sudo pacman -S --noconfirm --needed git bspwm sxhkd
+
+echo "==> Cloning ZyXtArch repo..."
+cd "$HOME"
 git clone https://github.com/zyxtyz/ZyXtArch
+mv "$HOME/Zyxtyz/ZyXtArch" "$HOME/.config/zyxtarch"
 
-mv "$HOME"/ZyXtArch  ~/.config/zyxtarch
-
-echo "making a session for bspwm-zyxtarch so you won't need backup"
-
+echo "==> Creating bspwm-zyxtarch session file..."
 sudo mkdir -p /usr/share/xsessions/
-
-sudo touch /usr/share/xsessions/bspwm-zyxtarch.desktop
-
-sudo cat <<'EOF' > /usr/share/xessions/bpswm-zyxtarch.desktop
+sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop > /dev/null <<'EOF'
 [Desktop Entry]
 Name=bspwm (zyxtarch)
-Comment=BSPWM -zyxtarch
+Comment=BSPWM - ZyxtArch
 Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
 Type=Application
 DesktopNames=bspwm
 EOF
 
-cd ~
-echo "Installing paru. password needed"
-sudo pacman -S --needed base-devel
+echo "==> Installing paru (AUR helper)..."
+sudo pacman -S --noconfirm --needed base-devel
+cd "$HOME"
 git clone https://aur.archlinux.org/paru.git
 cd paru
-makepkg -si
-
+makepkg -si --noconfirm
+cd "$HOME"
 rm -rf paru
 
-echo "adding binaries in /bin"
-cd ~/.config/zyxtarch/bin
-sudo cp rice /bin
-sudo cp tui-pacman /bin
-echo "installing packages"
-paru -S flameshot fzf neovim cava kitty wallust-git xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh 
+echo "==> Adding custom binaries to /usr/local/bin..."
+cd "$HOME/.config/zyxtarch/bin"
+sudo cp rice /usr/local/bin/
+sudo cp tui-pacman /usr/local/bin/
 
-reboot
+echo "==> Installing additional packages with paru..."
+paru -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
+  xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh
 
+echo "==> Setup complete! Rebooting system..."
+sudo reboot
