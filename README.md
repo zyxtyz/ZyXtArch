@@ -2,4 +2,4 @@
 
 
 ## installation:
-`` curl -fsSl https://github.com/zyxtyz/ZyXtArch/installRice.sh | sh ``
+`` sh -c $(curl -sS https://github.com/zyxtyz/ZyXtArch/installRice.sh) ``

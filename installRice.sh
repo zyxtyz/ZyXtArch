@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e  # Exit immediately on any error
 
 echo "==> Installing git and required packages..."
