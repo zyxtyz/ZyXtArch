@@ -8,13 +8,14 @@
 #    /_______ \/ ____|/___/\  \|__| \____|__  /__|    \___  >___|  /
 #            \/\/           \_/             \/            \/     \/ 
 #
-#	Author: Zyxtyz
+#	Author: Zyxtyz 
 #	Repo: https://github.com/zyxtyz/ZyXtArch
 #
 # =====================================================================
 
 ZYXTARCH_DIR="$HOME/.config/zyxtarch"
-source "$ZYXTARCH_DIR"/colors/colors.sh
+[ -f "$ZYXTARCH_DIR/colors/colors.sh" ] && source "$ZYXTARCH_DIR"/colors/colors.sh
+
 # ---------------------------------------------------------------------
 # Open config files
 # ---------------------------------------------------------------------
@@ -42,12 +43,24 @@ EOF
 # ---------------------------------------------------------------------
 applywal() {
 	if [ -z "$1" ]; then
-        echo "Usage: rice wal <image-path>"
+        echo "Usage: rice wal <image-path-or-url>"
         return 1
     fi
 
-    # If relative path, make it absolute
-    image="$(realpath "$1" 2>/dev/null || echo "$1")"
+    image="$1"
+
+    # Check if the argument is a URL
+    if echo "$image" | grep -Eq '^https?://'; then
+        tmpfile="/tmp/$(basename "$image")"
+        echo "Downloading $image to $tmpfile..."
+            echo "❌ Failed to download $image"
+            return 1
+        
+        image="$tmpfile"
+    else
+        # Make relative paths absolute
+        image="$(realpath "$image" 2>/dev/null || echo "$image")"
+    fi
 
     if [ ! -f "$image" ]; then
         echo "❌ File not found: $image"
@@ -64,12 +77,130 @@ applywal() {
     bspc config active_border_color "$color2"
     bspc config focused_border_color "$color15"
 }
+#--------------------------------------------------------------------
+# set cursor globally (x11)
+#--------------------------------------------------------------------
+setcursor() {
+    CURSOR_PATH="$1"
+    CURSOR_SIZE="${2:-24}"  # default size 24 if not specified
 
+    if [ -z "$CURSOR_PATH" ]; then
+        echo "Usage: rice cursor <zip-or-dir> [size]"
+        return 1
+    fi
+
+    # Handle zip file
+    if [ -f "$CURSOR_PATH" ] && echo "$CURSOR_PATH" | grep -qE '\.zip$'; then
+        TMPDIR=$(mktemp -d)
+        echo "📦 Unzipping $CURSOR_PATH to $TMPDIR..."
+        unzip -q "$CURSOR_PATH" -d "$TMPDIR" || { echo "❌ Failed to unzip"; return 1; }
+        CURSOR_DIR="$TMPDIR"
+    elif [ -d "$CURSOR_PATH" ]; then
+        CURSOR_DIR="$CURSOR_PATH"
+    else
+        echo "❌ Not a valid zip or directory: $CURSOR_PATH"
+        return 1
+    fi
+
+    THEME_NAME=$(basename "$CURSOR_DIR")
+
+    echo "📁 Installing cursor theme '$THEME_NAME' to /usr/local/share/cursors/..."
+    sudo mkdir -p /usr/local/share/cursors/
+    sudo cp -r "$CURSOR_DIR" "/usr/local/share/cursors/$THEME_NAME"
+
+    echo "🔧 Setting XCURSOR_THEME=$THEME_NAME and size=$CURSOR_SIZE..."
+
+    # Ensure ~/.xprofile exists
+    [ ! -f "$HOME/.xprofile" ] && touch "$HOME/.xprofile"
+
+    # Add or update XCURSOR_THEME
+    if grep -q "XCURSOR_THEME" "$HOME/.xprofile" 2>/dev/null; then
+        sed -i "s/^export XCURSOR_THEME=.*/export XCURSOR_THEME=$THEME_NAME/" "$HOME/.xprofile"
+    else
+        echo "export XCURSOR_THEME=$THEME_NAME" >> "$HOME/.xprofile"
+    fi
+
+    # Add or update XCURSOR_SIZE
+    if grep -q "XCURSOR_SIZE" "$HOME/.xprofile" 2>/dev/null; then
+        sed -i "s/^export XCURSOR_SIZE=.*/export XCURSOR_SIZE=$CURSOR_SIZE/" "$HOME/.xprofile"
+    else
+        echo "export XCURSOR_SIZE=$CURSOR_SIZE" >> "$HOME/.xprofile"
+    fi
+
+    # Apply immediately for current session
+    export XCURSOR_THEME="$THEME_NAME"
+    export XCURSOR_SIZE="$CURSOR_SIZE"
+    xsetroot -cursor_name left_ptr
+
+    echo "✅ Cursor theme '$THEME_NAME' installed and applied."
+    echo "Logout/login to fully apply in all applications."
+
+    # Cleanup temp unzip if used
+    [ -n "$TMPDIR" ] && rm -rf "$TMPDIR"
+}
+
+#--------------------------------------------------------------------
+# set font global
+#--------------------------------------------------------------------
+setfontglobal() {
+    FONTFILE="$1"
+
+    if [ -z "$FONTFILE" ]; then
+        echo "Usage: rice font <fontfile>"
+        return 1
+    fi
+
+    echo "📦 Installing $FONTFILE to /usr/local/share/fonts..."
+    sudo mkdir -p /usr/local/share/fonts
+    sudo cp "$FONTFILE" /usr/local/share/fonts/
+
+    BASENAME=$(basename "$FONTFILE")
+
+    echo "🔧 Writing fontconfig override..."
+    sudo tee /etc/fonts/local.conf >/dev/null <<EOF
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+
+    <match target="scan">
+        <test name="file" compare="eq">
+            <string>/usr/local/share/fonts/$BASENAME</string>
+        </test>
+        <edit name="family" mode="assign" binding="strong">
+            <string>Cartograph CF DemiBoldItalic</string>
+        </edit>
+        <edit name="style" mode="assign" binding="strong">
+            <string>DemiBoldItalic</string>
+        </edit>
+    </match>
+
+    <match target="pattern">
+        <edit name="family" mode="assign">
+            <string>Cartograph CF DemiBoldItalic</string>
+        </edit>
+    </match>
+
+    <match target="pattern">
+        <edit name="style" mode="assign">
+            <string>DemiBoldItalic</string>
+        </edit>
+    </match>
+
+</fontconfig>
+EOF
+
+    echo "🔄 Rebuilding font cache..."
+    sudo fc-cache -f
+
+    echo "✅ Done. Your system is now forced to use DemiBoldItalic everywhere."
+    echo "Test with: fc-match"
+}
+   
 # ---------------------------------------------------------------------
 # Main script logic
 # ---------------------------------------------------------------------
 if [ -z "$1" ]; then
-	echo "Usage: rice <option> [argument (for wal)]"
+	echo "Usage: rice <option> [argument (for wal, font, cursor)]"
 	exit 1
 fi
 
@@ -79,14 +210,18 @@ case "$1" in
 	Usage: rice <option> [argument if needed]
 
 	options:
-	  [
-	  	edit
+	[
+		edit
 		wal
-	  ]
+		font
+        cursor
+	]
 	arguments:
-	  [
+	[
 		wal <wallpaper>
-	  ]
+		font <fontfile>
+        cursor <dir/zip>
+	]
 EOF
 ;;
 	edit)
@@ -95,8 +230,14 @@ EOF
 	wal)
 		applywal "$2"
 		;;
+	font)
+		setfontglobal "$2"
+		;;
+    cursor)
+        setcursor "$2"
+        ;;
 	*)
 		echo "Unknown option: $1"
-		echo "Available options: edit, wal"
+		echo "Available options: edit, wal, font, cursor"
 		;;
 esac

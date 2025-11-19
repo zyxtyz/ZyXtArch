@@ -28,8 +28,12 @@ target = "~/.config/zyxtarch/colors/colors.sh"
 
 [templates.vesktop]
 template = "vesktop.css"
-target = "~/.config/legcord/quickCss.css"
+target = "~/.config/vesktop/settings/quickCss.css"
 
 [templates.kitty]
 template = "colors-kitty.conf"
 target = "~/.config/kitty/kitty.conf"
+
+[templates.colors-json]
+template = "colors.json"
+target = "~/.config/zyxtarch/colors/colors.json"

@@ -19,17 +19,19 @@
 
 
 # Set environment variables
-export WALLUST_CACHE="$HOME/.config/zyxtarch/colors"
-export WALLUST_DIR="$HOME/.config/zyxtarch/wallust"
-export BSPWM_BIN="$HOME/.config/zyxtarch/bspwm/bin"
-export BSPWM_CONFIG="$HOME/.config/zyxtarch/bspwm/config"
-export PATH="$BSPWM_BIN:$PATH"
-export _JAVA_AWT_WM_NONREPARENTING=1
+typeset -g WALLUST_CACHE="$HOME/.config/zyxtarch/colors"
+typeset -g WALLUST_DIR="$HOME/.config/zyxtarch/wallust"
+typeset -g BSPWM_BIN="$HOME/.config/zyxtarch/bspwm/bin"
+typeset -g BSPWM_CONFIG="$HOME/.config/zyxtarch/bspwm/config"
+typeset -g PATH="$BSPWM_BIN:$PATH"
+typeset -g _JAVA_AWT_WM_NONREPARENTING=1
+typeset -g ZDOTDIR="$HOME/.config/zyxtarch/zsh/zshrc"
 
 # Source the colors
 source "$WALLUST_CACHE"/colors.sh
-# Set Wallpaper
+# startup stuff
  feh --bg-fill $wallpaper
+ picom --config "$BSPWM_CONFIG/picom/picom.conf" -b
 
 
 
@@ -40,7 +42,7 @@ bspc monitor -d 1 2 3 4 5 6 7 8 9 10
 bspc config focus_follows_pointer true
 
 
-bspc config border_width         2
+bspc config border_width         0
 bspc config window_gap          12
 
 bspc config split_ratio          0.52

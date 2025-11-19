@@ -1,8 +1,0 @@
-#!/bin/sh
-
-while true; do
-    url=$(playerctl metadata mpris:artUrl 2>/dev/null)
-    echo $url
-
-done
-

@@ -1,0 +1,1 @@
+alias nvim="nvim -u $ZYXTARCH/nvim/init.lua"

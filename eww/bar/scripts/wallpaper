@@ -1,8 +1,0 @@
-#!/bin/sh
-
-WALLPAPER=$(eww get wallpaper)
-
-wal -i "$WALLPAPER" --out-dir ../../
-swww img "$WALLPAPER" -t outer --transition-fps 120
-eww reload -c ../
-eww reload -c ../multiple-windows

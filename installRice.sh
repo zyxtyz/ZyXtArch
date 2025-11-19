@@ -1,7 +1,7 @@
 #!/bin/sh  # Exit immediately on any error
 
 echo "==> Installing git and required packages..."
-sudo pacman -S --noconfirm --needed git bspwm sxhkd
+sudo pacman -S --noconfirm --needed git bspwm sxhkd feh
 
 echo "==> Cloning ZyXtArch repo..."
 cd "$HOME"
@@ -37,7 +37,8 @@ sudo cp tui-pacman /usr/local/bin/
 
 echo "==> Installing additional packages with paru..."
 paru -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
-  xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh
+  xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
+  eww-git nushell
 
 echo "==> Setup complete! Rebooting system..."
 sudo reboot
