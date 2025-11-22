@@ -1,5 +1,6 @@
 ZSH_DIR="$HOME/.config/zyxtarch/zsh"
+XDG_CONFIG_HOME="$HOME/.config/zyxtarch"
 
 
-source $ZSH_DIR/zinit.zsh
-source $ZSH_DIR/aliases.zsh
+. $ZSH_DIR/zinit.zsh
+. $ZSH_DIR/aliases.zsh

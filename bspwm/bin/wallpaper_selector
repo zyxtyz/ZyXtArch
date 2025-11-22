@@ -1,0 +1,12 @@
+#!/usr/bin/zsh
+
+ZYXTARCH="$HOME/.config/zyxtarch"
+WALL_DIRECTORY="$ZYXTARCH/wallpapers"
+
+wall_selection=$(
+  find "$WALL_DIRECTORY" -type f \( -iname "*.jpg" -o -iname "*.jpeg" -o -iname "*.png" -o -iname "*.webp" \) -printf "%p %f\n" | \
+  rofi -dmenu -theme "$ZYXTARCH/bspwm/config/rofi/wallpaper_selector.rasi"
+)
+
+[[ -n "$wall_selection" ]] && rice wal "${wall_selection%% *}"
+

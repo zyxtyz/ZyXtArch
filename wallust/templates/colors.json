@@ -3,6 +3,7 @@
     "wallpaper": "{{wallpaper}}",
     
     "background": "{{background}}",
+    "foreground": "{{foreground}}",
     "cursor": "{{cursor}}",
     "color0": "{{color0}}",
 

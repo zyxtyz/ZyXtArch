@@ -19,6 +19,7 @@
 
 
 # Set environment variables
+typeset -g ZYXTARCH="$HOME/.config/zyxtarch"
 typeset -g WALLUST_CACHE="$HOME/.config/zyxtarch/colors"
 typeset -g WALLUST_DIR="$HOME/.config/zyxtarch/wallust"
 typeset -g BSPWM_BIN="$HOME/.config/zyxtarch/bspwm/bin"
@@ -27,13 +28,9 @@ typeset -g PATH="$BSPWM_BIN:$PATH"
 typeset -g _JAVA_AWT_WM_NONREPARENTING=1
 typeset -g ZDOTDIR="$HOME/.config/zyxtarch/zsh/zshrc"
 
-# Source the colors
-source "$WALLUST_CACHE"/colors.sh
-# startup stuff
- feh --bg-fill $wallpaper
- picom --config "$BSPWM_CONFIG/picom/picom.conf" -b
-
-
+# The config stuffy stuffy :)
+daily_stuff
+source "$WALLUST_CACHE/colors.sh"
 
 pgrep -x sxhkd > /dev/null || sxhkd -c ~/.config/zyxtarch/bspwm/sxhkdrc &
 

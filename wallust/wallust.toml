@@ -23,6 +23,10 @@
 backend = "wal"
 
 [templates.colors]
+template = "colors"
+target = "~/.config/zyxtarch/colors/colors"
+
+[templates.colors-sh]
 template = "colors.sh"
 target = "~/.config/zyxtarch/colors/colors.sh"
 
@@ -37,3 +41,15 @@ target = "~/.config/kitty/kitty.conf"
 [templates.colors-json]
 template = "colors.json"
 target = "~/.config/zyxtarch/colors/colors.json"
+
+[templates.colors-css]
+template = "colors.css"
+target = "~/.config/zyxtarch/colors/colors.css"
+
+[templates.colors-rasi]
+template = "colors.rasi"
+target = "~/.config/zyxtarch/colors/colors.rasi"
+
+[templates.colors-scss]
+template = "colors.scss"
+target = "~/.config/zyxtarch/colors/colors.scss"

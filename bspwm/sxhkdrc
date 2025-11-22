@@ -8,11 +8,15 @@ super + Return
 
 # program launcher
 super + r
-	rofi -show drun -c $BSPWM_CONFIG/default.rasi
+	rofi -show drun -config ~/.config/zyxtarch/bspwm/config/rofi/default.rasi 
+
+# wallpaper selector
+super + shift + w
+	zsh ~/.config/zyxtarch/bspwm/bin/wallpaper_selector
 
 # browser
 super + b
-	firefox
+	zen-browser
 
 # file manager
 super + n
@@ -22,9 +26,10 @@ super + n
 super + d
 	vesktop
 
-# spotify
+# music player
 ctrl + shift + m
-	spotify
+	kitty zsh -c 'ncmpcpp'
+	
 
 # screenshot
 super + shift + s
@@ -58,9 +63,6 @@ super + f
 super + v
 	bspc node -t '~floating'
 
-#
-# focus/swap
-#
 
 # focus the node in the given direction (arrow keys)
 super + {Left,Down,Up,Right}
@@ -74,11 +76,9 @@ super + {1-9,0}
 super + shift + {1-9,0}
     bash -c 'desk="^{1-9,10}"; bspc node -d "$desk" && bspc desktop -f "$desk"'
 
-
-
 # Audio controls
 XF86AudioRaiseVolume
-	wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
+	wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
 
 XF86AudioLowerVolume
 	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
