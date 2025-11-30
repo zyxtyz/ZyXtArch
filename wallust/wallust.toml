@@ -19,8 +19,8 @@
 #    cursor
 #    wallpaper
 
-[general]
-backend = "wal"
+backend = "full"
+color_space = "lch"
 
 [templates.colors]
 template = "colors"

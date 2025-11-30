@@ -4,4 +4,4 @@ ZYXTARCH=$HOME/.config/zyxtarch
 source $ZYXTARCH/colors/colors.sh
  feh --bg-fill $wallpaper
  picom --config "$ZYXTARCH/bspwm/config/picom/picom.conf" -b
- mpd "$ZYXTARCH/music/mpd/mpd.conf" 
+ mpd "$ZYXTARCH/music/mpd/mpd.conf"

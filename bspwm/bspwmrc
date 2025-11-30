@@ -27,6 +27,9 @@ typeset -g BSPWM_CONFIG="$HOME/.config/zyxtarch/bspwm/config"
 typeset -g PATH="$BSPWM_BIN:$PATH"
 typeset -g _JAVA_AWT_WM_NONREPARENTING=1
 typeset -g ZDOTDIR="$HOME/.config/zyxtarch/zsh/zshrc"
+typeset -g PATH="$ZYXTARCH/eww/scripts:$PATH"
+typeset -g PATH="$ZYXTARCH/bin:$PATH"
+
 
 # The config stuffy stuffy :)
 daily_stuff

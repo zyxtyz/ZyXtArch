@@ -78,7 +78,7 @@ super + shift + {1-9,0}
 
 # Audio controls
 XF86AudioRaiseVolume
-	wpctl set-volume -l 1 @DEFAULT_AUDIO_SINK@ 5%+
+	wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+
 
 XF86AudioLowerVolume
 	wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-

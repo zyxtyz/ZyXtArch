@@ -1,7 +1,5 @@
 #!/bin/sh 
 
-
-
 echo "==> Installing git and required packages..."
 sudo pacman -S --noconfirm --needed git bspwm sxhkd feh
 
@@ -40,7 +38,7 @@ sudo cp tui-pacman /usr/local/bin/
 echo "==> Installing additional packages with paru..."
 paru -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
   xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
-  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp
+  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts
 
 mkdir ~/Music
 
@@ -48,5 +46,11 @@ echo "==> Fetching font .OTF and setting up font..."
 curl -L https://github.com/g5becks/Cartograph/blob/main/CartographCF-BoldItalic.otf -o $HOME
 rice font $HOME/CartographCF-BoldItalic.otf
 
+
+
+
+
+echo "==> Cleaning..."
+rm -rf $HOME/{CartographCF-BoldItalic.otf,ZyXtArch}
 echo "==> Setup complete! Rebooting system..."
 sudo reboot

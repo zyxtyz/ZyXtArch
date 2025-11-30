@@ -1,21 +1,30 @@
 (deflisten cava :initial "▁▁▁▁▁▁▁▁"
-    "./scripts/cava")
+    "./scripts/cava-eww")
+(defpoll wifi   :interval "0s"
+                :initial "Disconnected"
+    "./scripts/wifi_detect")
 
 (defpoll date   :interval "0s"
                 :initial "00:00:00"
-    "date +'%H:%M:%S %m/%d'")
+    "date +'%I:%M:%S %m/%d'")
+
+(defpoll volume :interval "0s"
+                :initial "Vol%"
+    "./scripts/volume")
+
+(defvar show-tray false)
 
 (defwindow zewwr
     :monitor 0
     :geometry (geometry :x "0%"
-                        :y "3px"
-                        :width "99%"
-                        :height "30px"
+                        :y "4px"
+                        :width "90%"
+                        :height "40px"
                         :anchor "top center")
-    :stacking "bg"
+    :stacking "fg"
     :reserve (struts :distance "35px" :side "top")
     :windowtype "dock"
-    :wm-ignore "true"
+    :wm-ignore false
     :class "zewwr"
     (elements))
 
@@ -23,24 +32,21 @@
 (defwidget elements []
    (centerbox
         :orientation "h"
-        
-        (additional_stuff)
+        (left_bar)
         (menu)
-        (additional_stuff2))
+        (right_bar))
 )
 
 
-(defwidget additional_stuff []
+(defwidget left_bar []
    (box
         ; Yeah. I know I'm a retard for doing this.
      (box
         :spacing 30
-        :space-evenly "false"
-
+        :space-evenly false
+        :class "left_bar"
         (label :text "  ")
         (label :text "${cava}")
-        
-        
         (label :text "${date}")
           
         
@@ -49,6 +55,18 @@
 (defwidget menu []
 "WIP (menu)")
 
-(defwidget additional_stuff2 []
+(defwidget right_bar []
+(box
+    :spacing 50
+    :orientation "h"
+    :space-evenly true
+    :class "right-bar"
+    :halign "center"
 
-"WIP (additional_stuff2)")
+    
+    (box  (label :class "wifi" :text "  ${wifi}"  ))
+    (box  (label :class "vol" :text "  ${volume}  "))
+    
+    
+))
+

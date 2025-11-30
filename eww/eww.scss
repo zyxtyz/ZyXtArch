@@ -1,14 +1,16 @@
 @import "../colors/colors.scss";
+
 * {
     all: unset;
     background-color: $background;
+    color: $foreground;
+    
 }
 
-.zewwr {
-    border-radius: 0%;
-}
 
-#workspaces {
-    all:unset;
+.wifi {
+    padding: 0px;
+    border: 3px solid $color2;
+    border-radius: 10px;
+    background-color: $background;
 }
-
