@@ -22,10 +22,11 @@
                         :height "40px"
                         :anchor "top center")
     :stacking "fg"
-    :reserve (struts :distance "35px" :side "top")
+    :reserve (struts :distance "40px" :side "top")
     :windowtype "dock"
     :wm-ignore false
     :class "zewwr"
+    :visible true
     (elements))
 
 

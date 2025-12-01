@@ -16,7 +16,7 @@ super + shift + w
 
 # browser
 super + b
-	zen-browser
+	vivaldi
 
 # file manager
 super + n
