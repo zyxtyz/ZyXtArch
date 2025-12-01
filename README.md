@@ -2,6 +2,5 @@
 
 
 ## installation:
-`` curl -fsSl https://segs.lol/xuyn5e | sh``
+``curl -fsSl https://raw.githubusercontent.com/zyxtyz/ZyXtArch/refs/heads/main/installRice.sh | sh``
 
-i have to use segs.lol because git has some problems (for me atleast) but the source code is all there
