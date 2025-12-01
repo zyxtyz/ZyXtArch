@@ -21,6 +21,9 @@ Type=Application
 DesktopNames=bspwm
 EOF
 
+if command -v paru then	
+	echo "Paru is installed!"
+else
 echo "==> Installing paru (AUR helper)..."
 sudo pacman -S --noconfirm --needed base-devel
 cd "$HOME"
@@ -30,6 +33,7 @@ makepkg -si --noconfirm
 cd "$HOME"
 rm -rf paru
 
+fi
 echo "==> Adding custom binaries to /usr/local/bin..."
 cd "$HOME/.config/zyxtarch/bin"
 sudo cp rice /usr/local/bin/
