@@ -53,3 +53,7 @@ target = "~/.config/zyxtarch/colors/colors.rasi"
 [templates.colors-scss]
 template = "colors.scss"
 target = "~/.config/zyxtarch/colors/colors.scss"
+
+[templates.dunst]
+template = "dunstrc"
+target = "~/.config/zyxtarch/dunst/dunstrc"

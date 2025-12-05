@@ -42,23 +42,23 @@ EOF
 # Apply wallpaper + pywal theme
 # ---------------------------------------------------------------------
 applywal() {
-	if [ -z "$1" ]; then
+    if [ -z "$1" ]; then
         echo "Usage: rice wal <image-path-or-url>"
         return 1
     fi
 
     image="$1"
 
-    # Check if the argument is a URL
     if echo "$image" | grep -Eq '^https?://'; then
         tmpfile="/tmp/$(basename "$image")"
-        echo "Downloading $image to $tmpfile..."
-            echo "❌ Failed to download $image"
-            return 1
-        
+        if ! curl -L "$image" -o "$tmpfile" 2>/dev/null; then
+            if ! wget -O "$tmpfile" "$image" 2>/dev/null; then
+                echo "❌ Failed to download $image"
+                return 1
+            fi
+        fi
         image="$tmpfile"
     else
-        # Make relative paths absolute
         image="$(realpath "$image" 2>/dev/null || echo "$image")"
     fi
 
@@ -67,16 +67,26 @@ applywal() {
         return 1
     fi
 
-    WALLUST_config_FILE="$ZYXTARCH_DIR"/wallust/config.toml
-    WALLUST_TEMPLATES="$ZYXTARCH_DIR"/wallust/templates
-    WALLUST_CONFIG="$ZYXTARCH_DIR"/wallust
+    WALLUST_CONFIG="$ZYXTARCH_DIR/wallust"
+    WALLUST_COLORS="$WALLUST_CONFIG/colors"
 
     feh --bg-fill "$image"
-    wallust run "$image" -d $WALLUST_CONFIG 
+    wallust run "$image" -d "$WALLUST_CONFIG"
+
+    if [ -f "$WALLUST_COLORS" ]; then
+        source "$WALLUST_COLORS"
+    else
+        echo "❌ Wallust color file missing"
+        return 1
+    fi
+
     bspc config normal_border_color "$color1"
     bspc config active_border_color "$color2"
     bspc config focused_border_color "$color15"
+
     eww reload -c "$ZYXTARCH_DIR/eww"
+
+    echo "✅ Wallpaper and theme applied!"
 }
 
 #--------------------------------------------------------------------

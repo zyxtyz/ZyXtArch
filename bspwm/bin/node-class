@@ -1,0 +1,5 @@
+#!/bin/sh
+for n in $(bspc query -N); do
+    class=$(xprop -id "$n" WM_CLASS 2>/dev/null | awk -F\" '{print $4}')
+    echo "$n -> $class"
+done

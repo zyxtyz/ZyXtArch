@@ -43,8 +43,8 @@ visualizer_spectrum_log_scale_y = yes
 ##### Display Options #####
 playlist_display_mode = columns
 browser_display_mode = classic
-search_engine_display_mode = classic
-playlist_editor_display_mode = classic
+search_engine_display_mode = alternative
+playlist_editor_display_mode = alternative
 titles_visibility = yes
 header_visibility = yes
 header_text_scrolling = yes

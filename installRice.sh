@@ -41,7 +41,7 @@ fi
 echo "==> Installing additional packages with paru..."
 paru -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
   xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
-  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts
+  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts vivaldi
 
 echo "==> Setting up zsh..."
 touch ~/.zshrc

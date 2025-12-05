@@ -1,0 +1,152 @@
+#############################################  
+[global]  
+  
+monitor = 0                             # Which monitor to show notifications on (0 = primary)  
+follow = none                           # Follow mouse/keyboard for notification placement: none|mouse|keyboard  
+sticky_history = no                     # Keep history notifications open until dismissed  
+history_length = 20                     # Max number of notifications stored in history  
+enable_posix_regex = true               # Enable regex support for rules  
+  
+### Notification Placement ###  
+width = (300, 500)                      # Notification width: fixed OR range (min,max)  
+height = (0, 200)                       # Dynamic height from 0 to 200  
+origin = top-right                      # Screen corner to place notifications: top-left|top-center|top-right|bottom-left|bottom-center|bottom-right  
+offset = (20, 20)                       # Offset from screen edge (X,Y)  
+  
+### Visuals ###  
+transparency = 0                        # Window background transparency (0-100)  
+corner_radius = 5                       # Rounded corner radius in pixels  
+corners = all                           # Which corners are rounded: all|top|bottom|none  
+padding = 10                            # Padding around text and icon  
+horizontal_padding = 10                 # Additional horizontal padding  
+text_icon_padding = 10                  # Gap between icon and text  
+  
+### Frame / Borders ###  
+frame_width = 2                         # Border thickness in pixels  
+frame_color = "{{color9}}"              # Border color  
+  
+### Icons ###  
+icon_position = left                    # Where to place icons: off|left|right  
+icon_path = /usr/share/icons:/usr/share/pixmaps   # Directories to search for icons  
+icon_theme = hicolor                    # Icon theme to use (if theme mode enabled)  
+enable_recursive_icon_lookup = false    # Recursively search icon folders for files  
+min_icon_size = 0                       # Minimum icon size  
+max_icon_size = 128                     # Maximum icon size  
+  
+### Text Formatting ###  
+markup = full                           # Enable Pango markup in notifications  
+format = "<b>%s</b>\n%b"                # Notification format: %s = summary, %b = body  
+alignment = left                        # Text alignment: left|center|right  
+vertical_alignment = center             # Vertical alignment: top|center|bottom  
+show_age_threshold = 60                 # Show age indicator after N seconds  
+ellipsize = middle                      # Where to shorten text: start|middle|end  
+  
+### Duplicate Handling ###  
+stack_duplicates = true                 # Merge identical notifications  
+hide_duplicate_count = false            # Hide the (xN) counter for merged notifications  
+  
+### Timing ###  
+idle_threshold = 120                    # Don't timeout if system idle longer than this  
+show_indicators = yes                   # Show action indicators (e.g., buttons)  
+separator_height = 2                    # Height of separator between notifications  
+separator_color = frame                 # Separator color: auto|foreground|frame|custom  
+sort = yes                              # Sort notifications by urgency  
+  
+### Behavior ###  
+word_wrap = yes                         # Wrap long body text  
+line_height = 0                         # Increase/decrease line spacing (0 = auto)  
+always_run_script = false               # Run scripts even if suppressed  
+ignore_newline = no                     # Replace newlines with spaces if yes  
+  
+### Mouse Actions ###  
+mouse_left_click = close_current        # Action on left-click: close_current|close_all|do_action|open_url  
+mouse_middle_click = close_all          # Action on middle-click  
+mouse_right_click = do_action           # Action on right-click  
+  
+### Actions ###  
+browser = /usr/bin/xdg-open             # Browser command used to open URLs  
+  
+### Wayland/X11 ###  
+force_xwayland = false                  # Force XWayland instead of Wayland backend  
+  
+#############################################  
+#             URGENCY: LOW                  #  
+#############################################  
+[urgency_low]  
+timeout = 4                              # Auto-close time for low urgency notifications  
+background = "{{background}}"            # Background color  
+foreground = "{{foreground}}"            # Text color  
+frame_color = "{{color9}}"               # Border color  
+default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-information.png  # Icon override  
+  
+#############################################  
+#            URGENCY: NORMAL                #  
+#############################################  
+[urgency_normal]  
+timeout = 6                              # Auto-close time for normal urgency notifications  
+background = "{{background}}"            # Background color  
+foreground = "{{foreground}}"            # Text color  
+frame_color = "{{color2}}"               # Border color  
+default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-warning.png      # Icon override  
+  
+#############################################  
+#          URGENCY: CRITICAL                #  
+#############################################  
+[urgency_critical]  
+timeout = 0                              # Don't auto-close (0 = persistent)  
+background = "{{color3}}"                # Background color  
+foreground = "{{color6}}"                # Text color  
+frame_color = "{{color9}}"               # Border color  
+default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-error.png        # Icon override  
+  
+#############################################  
+#                 RULES                     #  
+#############################################  
+  
+# Mute entire apps  
+[rule_mute_discord]  
+appname = "Discord"                      # Match application name  
+timeout = 1                              # Very short timeout (effectively silent)  
+script = ~/.config/dunst/scripts/muted.sh # Run script when notification arrives  
+  
+# Stick GitHub notifications  
+[rule_github]  
+appname = "GitHub"                       # App name filter  
+urgency = normal                         # Override urgency  
+timeout = 0                              # Make persistent  
+  
+# Bigger text for chat apps (font removed - it's a global setting)  
+[rule_chat]  
+appname = "Telegram Desktop|Signal|WhatsApp"  # Regex filter across apps  
+  
+# Shorten Spotify notifications  
+[rule_spotify]  
+appname = "Spotify"                       # Match Spotify  
+timeout = 2                               # Short timeout  
+  
+# Highlight system monitor alerts  
+[rule_system_monitor]  
+summary = "Battery|CPU|RAM"               # Match summary using regex  
+foreground = "{{foreground}}"             # Text color override  
+background = "{{background}}"             # Background override  
+frame_color = "{{color2}}"                # Frame override  
+  
+# Hide specific messages  
+[rule_silent]  
+summary = "Screenshot saved"              # Match summary  
+skip_display = true                       # Don't show notification  
+timeout = 2                               # Auto-close quickly anyway  
+  
+# Large icons for image-heavy apps  
+[rule_images]  
+icon_position = left                      # Ensure icon displayed  
+max_icon_size = 128                       # Bigger icons  
+  
+# Force action buttons enabled  
+[rule_force_actions]  
+actions = true                            # Force actions even if app didn't set them  
+  
+# Auto-open certain summary-triggered URLs  
+[rule_url_open]  
+summary = "Open this:*"                   # Match summary text  
+script = ~/.config/dunst/scripts/openurl.sh  # Script to execute

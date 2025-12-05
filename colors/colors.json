@@ -1,27 +1,27 @@
 
 {
-    "wallpaper": "/home/zyxtyz/.config/zyxtarch/wallpapers/dark-floral.png",
+    "wallpaper": "/home/zyxtyz/.config/zyxtarch/wallpapers/Lines.png",
     
-    "background": "#18181B",
-    "foreground": "#BBC2CA",
-    "cursor": "#6F7781",
-    "color0": "#3F3F42",
+    "background": "#19181C",
+    "foreground": "#C0C2D8",
+    "cursor": "#6E7288",
+    "color0": "#403F43",
 
-    "color1": "#28273C",
-    "color2": "#242C39",
-    "color3": "#383654",
-    "color4": "#2F4052",
-    "color5": "#404B67",
-    "color6": "#3C5267",
-    "color7": "#95A0AB",
+    "color1": "#141A28",
+    "color2": "#1C2137",
+    "color3": "#272A49",
+    "color4": "#313960",
+    "color5": "#3F467A",
+    "color6": "#4A5290",
+    "color7": "#9CA0BF",
 
-    "color8": "#687077",
-    "color9": "#28273C",
-    "color10": "#242C39",
-    "color11": "#383654",
-    "color12": "#2F4052",
-    "color13": "#404B67",
-    "color14": "#3C5267",
-    "color15": "#95A0AB"
+    "color8": "#6D7086",
+    "color9": "#141A28",
+    "color10": "#1C2137",
+    "color11": "#272A49",
+    "color12": "#313960",
+    "color13": "#3F467A",
+    "color14": "#4A5290",
+    "color15": "#9CA0BF"
     
 }
