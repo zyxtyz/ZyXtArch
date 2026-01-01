@@ -57,3 +57,7 @@ target = "~/.config/zyxtarch/colors/colors.scss"
 [templates.dunst]
 template = "dunstrc"
 target = "~/.config/zyxtarch/dunst/dunstrc"
+
+[templates.eww-scss]
+template = "colors-eww.scss"
+target = "~/.config/zyxtarch/ewwii/ewwii.scss"

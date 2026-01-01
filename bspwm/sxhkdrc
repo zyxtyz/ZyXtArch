@@ -10,10 +10,6 @@ super + Return
 super + r
 	rofi -show drun -config ~/.config/zyxtarch/bspwm/config/rofi/default.rasi 
 
-# wallpaper selector
-super + shift + w
-	zsh ~/.config/zyxtarch/bspwm/bin/wallpaper_selector
-
 # browser
 super + b
 	vivaldi

@@ -22,26 +22,26 @@ DesktopNames=bspwm
 EOF
 
 echo "==> Checking if paru is installed..."
-if command -v paru >/dev/null 2>&1; then
+if command -v yay >/dev/null 2>&1; then
   echo "Installed!"
 else
-  echo "==> Paru not installed.."
-  echo "==> Installing paru (AUR helper)..."
+  echo "==> Yay not installed.."
+  echo "==> Installing Yay (AUR helper)..."
   sudo pacman -S --noconfirm --needed base-devel
   cd "$HOME"
-  git clone https://aur.archlinux.org/paru.git
-  cd paru
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
   makepkg -si --noconfirm >/dev/null 2>&1
   cd "$HOME"
-  rm -rf paru 
+  rm -rf yay 
 fi
 
 
 
 echo "==> Installing additional packages with paru..."
-paru -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
+yay -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
   xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
-  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts vivaldi
+  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts vivaldi picom
 
 echo "==> Setting up zsh..."
 touch ~/.zshrc

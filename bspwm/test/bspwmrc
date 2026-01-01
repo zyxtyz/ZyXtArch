@@ -1,0 +1,91 @@
+#!/usr/bin/python3
+#==============================================================================
+#    __________  ___________________  _____  __      _____________________  
+#    \______   \/   _____/\______   \/     \/  \    /  \______   \_   ___ \ 
+#     |    |  _/\_____  \  |     ___/  \ /  \   \/\/   /|       _/    \  \/ 
+#     |    |   \/        \ |    |  /    Y    \        / |    |   \     \____
+#     |______  /_______  / |____|  \____|__  /\__/\  /  |____|_  /\______  /
+#            \/        \/                  \/      \/          \/        \/
+# Author: Zyxtyz
+# Github Repo: https://github.com/zyxtyz/ZyXtArch
+# Last Update: 18.12.2025 10:35:30
+#
+#
+#==============================================================================
+
+import subprocess
+from pathlib import Path
+from datetime import datetime
+import os
+
+# ========================
+# Paths and logging
+# ========================
+HOME = Path.home()
+LOG_PATH = Path("~/.config/zyxtarch/bspwm/bspwmrc.error").expanduser()
+ZYXTARCH = HOME / ".config/zyxtarch"
+WALLUST_CACHE = ZYXTARCH / "colors"
+BSPWM_BIN = ZYXTARCH / "bspwm/bin"
+BSPWM_CONFIG = ZYXTARCH / "bspwm/config"
+
+# Ensure log directory exists
+LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+def log_error(message: str):
+    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with LOG_PATH.open("a") as f:
+        f.write(f"[{timestamp}] {message}\n")
+
+def run(cmd: str):
+
+    """Run a shell command with error logging."""
+    try:
+        subprocess.run(
+            cmd,
+            shell=True,
+            check=True,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.PIPE,
+            env=os.environ  # Use current environment
+        )
+    except subprocess.CalledProcessError as e:
+        stderr = e.stderr.decode().strip() if e.stderr else "no stderr"
+        log_error(f"Command failed:\n  {cmd}\n  {stderr}")
+
+# ========================
+# Environment setup
+# ========================
+os.environ["ZYXTARCH"] = str(ZYXTARCH)
+os.environ["WALLUST_CACHE"] = str(WALLUST_CACHE)
+os.environ["WALLUST_DIR"] = str(ZYXTARCH / "wallust")
+os.environ["BSPWM_BIN"] = str(BSPWM_BIN)
+os.environ["BSPWM_CONFIG"] = str(BSPWM_CONFIG)
+os.environ["_JAVA_AWT_WM_NONREPARENTING"] = "1"
+os.environ["ZDOTDIR"] = str(ZYXTARCH / "zsh/zshrc")
+
+# Add custom scripts to PATH
+os.environ["PATH"] = f"{BSPWM_BIN}:{ZYXTARCH}/eww/scripts:{ZYXTARCH}/bin:{os.environ['PATH']}"
+
+# ========================
+# Startup commands
+# ========================
+
+run("daily_stuff")
+
+# Source colors
+#colors_script = WALLUST_CACHE / "colors.sh"
+run(f"source {colors_script} || true")
+
+# Start sxhkd if not running
+run("pgrep -x sxhkd > /dev/null || sxhkd -c ~/.config/zyxtarch/bspwm/sxhkdrc &")
+
+# Setup desktops
+run("bspc monitor -d 1 2 3 4 5 6 7 8 9 10")
+
+# Configure bspwm
+run("bspc config focus_follows_pointer true")
+run("bspc config border_width 0")
+run("bspc config window_gap 12")
+run("bspc config split_ratio 0.52")
+run("bspc config borderless_monocle true")
+run("bspc config gapless_monocle true")

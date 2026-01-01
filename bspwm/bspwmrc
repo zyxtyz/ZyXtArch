@@ -11,7 +11,7 @@
 #            \/        \/                  \/      \/          \/        \/
 # Author: Zyxtyz
 # Github Repo: https://github.com/zyxtyz/ZyXtArch
-# Last Update: 06.11.2025 19:08:37
+# Last Update: 18.12.2025 10:35:30
 #
 #
 #==============================================================================
@@ -27,7 +27,7 @@ typeset -g BSPWM_CONFIG="$HOME/.config/zyxtarch/bspwm/config"
 typeset -g PATH="$BSPWM_BIN:$PATH"
 typeset -g _JAVA_AWT_WM_NONREPARENTING=1
 typeset -g ZDOTDIR="$HOME/.config/zyxtarch/zsh/zshrc"
-typeset -g PATH="$ZYXTARCH/eww/scripts:$PATH"
+typeset -g PATH="$ZYXTARCH/ewwii/scripts:$PATH"
 typeset -g PATH="$ZYXTARCH/bin:$PATH"
 
 
