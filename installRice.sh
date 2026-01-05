@@ -129,25 +129,21 @@ sudo reboot
 
 
 echo "What WM do you want?"
-echo "hyprland"
-echo "bspwm"
-echo "selection >>>" 
+echo "1) bspwm"
+echo "2) hyprland"
+printf "Selection: "
 read wm
-select wm in bspwm hyprland; do
-  case $wm in
-    bspwm)
-      install_bspwm
-      break
-      ;;
-    hyprland)
-      install_hyprland
-      break
-      ;;
-    *)
-      echo "Invalid selection, choose hyprland or bspwm"
-      ;;
-  esac
-done
 
+case "$wm" in
+  1|bspwm)
+    install_bspwm
+    ;;
+  2|hyprland)
+    install_hyprland
+    ;;
+  *)
+    echo "Invalid selection"
+    ;;
+esac
 
 
