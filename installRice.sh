@@ -141,6 +141,7 @@ EOF
 
 install_hyprland() {
   echo "==> Hyprland selected"
+ls
 
   if confirm "Install Hyprland?"; then
     install_pacman_packages hyprland
