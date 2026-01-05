@@ -1,5 +1,9 @@
-#!/usr/bin/bash
+#!/bin/bash
 set -e
+
+# ------------------------
+# Helper functions
+# ------------------------
 
 confirm() {
   read -rp ">> $1 [y/N]: " choice
@@ -9,12 +13,54 @@ confirm() {
   esac
 }
 
+is_installed() {
+  pacman -Qi "$1" &>/dev/null
+}
+
+install_pacman_packages() {
+  local pkgs=()
+  for pkg in "$@"; do
+    if is_installed "$pkg"; then
+      echo "==> $pkg already installed"
+    else
+      pkgs+=("$pkg")
+    fi
+  done
+
+  if [ "${#pkgs[@]}" -gt 0 ]; then
+    echo "==> Installing missing pacman packages: ${pkgs[*]}"
+    sudo pacman -S --needed --noconfirm "${pkgs[@]}"
+  else
+    echo "==> All pacman packages already installed"
+  fi
+}
+
+install_yay_packages() {
+  ensure_yay
+
+  local pkgs=()
+  for pkg in "$@"; do
+    if is_installed "$pkg"; then
+      echo "==> $pkg already installed"
+    else
+      pkgs+=("$pkg")
+    fi
+  done
+
+  if [ "${#pkgs[@]}" -gt 0 ]; then
+    echo "==> Installing missing AUR packages: ${pkgs[*]}"
+    yay -S --needed --noconfirm "${pkgs[@]}"
+  else
+    echo "==> All AUR packages already installed"
+  fi
+}
+
 ensure_yay() {
   if command -v yay >/dev/null 2>&1; then
     echo "==> yay already installed"
   else
     if confirm "yay is not installed. Install yay?"; then
-      sudo pacman -S --needed --noconfirm base-devel git
+      install_pacman_packages base-devel git
       cd "$HOME"
       git clone https://aur.archlinux.org/yay.git
       cd yay
@@ -30,7 +76,7 @@ ensure_yay() {
 
 setup_zsh() {
   if confirm "Set up zsh and make it default shell?"; then
-    sudo pacman -S --needed --noconfirm zsh
+    install_pacman_packages zsh
     mkdir -p ~/.config/zyxtarch
     grep -q zyxtarch ~/.zshrc 2>/dev/null || \
       echo 'source ~/.config/zyxtarch/zsh/.zshrc' >> ~/.zshrc
@@ -56,54 +102,64 @@ clone_config() {
   fi
 }
 
+# ------------------------
+# Install BSPWM
+# ------------------------
+
 install_bspwm() {
   echo "==> BSPWM selected"
 
   if confirm "Install bspwm and required packages?"; then
-    sudo pacman -S --needed --noconfirm bspwm sxhkd feh xorg-server xorg-xinit
+    install_pacman_packages bspwm sxhkd feh xorg-server xorg-xinit
   fi
 
   if confirm "Create bspwm display manager session file?"; then
     sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop >/dev/null <<'EOF'
 [Desktop Entry]
-Name=bspwm (ZyXtArch)
+Name=BSPWM (ZyXtArch)
 Comment=BSPWM - ZyXtArch
-Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
+Exec=bspwm -c /home/$USER/.config/zyxtarch/bspwm/bspwmrc
 Type=Application
 DesktopNames=bspwm
 EOF
   fi
 
-  ensure_yay
-
-  if confirm "Install additional bspwm rice packages?"; then
-    yay -S --needed --noconfirm \
-      flameshot fzf neovim cava kitty wallust \
-      xdg-desktop-portal-wlr \
-      ewwii mpd mpc yt-dlp bc nerd-fonts \
-      picom playerctl
-  fi
+  install_yay_packages \
+    flameshot fzf neovim cava kitty wallust \
+    xdg-desktop-portal-wlr \
+    ewwii mpd mpc yt-dlp bc nerd-fonts \
+    picom playerctl
 
   clone_config
   setup_zsh
   install_fonts
 }
+
+# ------------------------
+# Install Hyprland
+# ------------------------
 
 install_hyprland() {
   echo "==> Hyprland selected"
 
   if confirm "Install Hyprland?"; then
-    sudo pacman -S --needed --noconfirm hyprland
+    install_pacman_packages hyprland
   fi
 
-  ensure_yay
+  install_yay_packages \
+    hyprshot fzf neovim cava kitty wallust \
+    xdg-desktop-portal-hyprland \
+    ewwii mpd mpc yt-dlp bc nerd-fonts \
+    playerctl swww
 
-  if confirm "Install additional Hyprland rice packages?"; then
-    yay -S --needed --noconfirm \
-      hyprshot fzf neovim cava kitty wallust \
-      xdg-desktop-portal-hyprland \
-      ewwii mpd mpc yt-dlp bc nerd-fonts \
-       playerctl swww
+  if confirm "Create Hyprland Wayland session file?"; then
+    sudo tee /usr/share/wayland-sessions/hyprland-zyxtarch.desktop >/dev/null <<'EOF'
+[Desktop Entry]
+Name=Hyprland (ZyXtArch)
+Comment=Hyprland - ZyXtArch
+Exec=Hyprland
+Type=Application
+EOF
   fi
 
   clone_config
@@ -111,14 +167,19 @@ install_hyprland() {
   install_fonts
 }
 
+# ------------------------
+# Main menu
+# ------------------------
+
 echo "Select your Window Manager:"
 echo "1) bspwm"
 echo "2) hyprland"
 read -rp "Selection: " wm
+wm="$(echo "$wm" | tr -d '[:space:]')"
 
 case "$wm" in
-  1|bspwm) install_bspwm ;;
-  2|hyprland) install_hyprland ;;
+  1|bspwm|BSPWM) install_bspwm ;;
+  2|hyprland|HYPRLAND) install_hyprland ;;
   *) echo "Invalid selection"; exit 1 ;;
 esac
 
