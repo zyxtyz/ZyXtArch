@@ -1,5 +1,5 @@
 * {
-    background: #170F0F;
-    foreground: #F0FAF2;
-    selected: #B4AFAB;
+    background: #1C1E23;
+    foreground: #F8F9F1;
+    selected: #8E9B8D;
 }

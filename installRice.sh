@@ -1,7 +1,36 @@
 #!/bin/sh 
 
-echo "==> Installing git and required packages..."
-sudo pacman -S --noconfirm --needed git bspwm sxhkd feh >/dev/null 2>&1
+bspwm() {
+  echo "==> Installing bspwm and required packages..."
+  sudo pacman -S --noconfirm --needed bspwm sxhkd feh
+  echo "==> Creating bspwm-zyxtarch session file..."
+  sudo mkdir -p /usr/share/xsessions/
+  sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop > /dev/null <<'EOF'
+  [Desktop Entry]
+  Name=bspwm (zyxtarch)
+  Comment=BSPWM - ZyxtArch
+  Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
+  Type=Application
+  DesktopNames=bspwm
+EOF
+
+  echo "==> Installing additional packages with paru..."
+  yay -S --noconfirm flameshot fzf neovim cava kitty wallust \
+    xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
+    ewwii zinit mpd mpc rmpc yt-dlp bc nerd-fonts vivaldi picom \
+    playerctl
+
+}
+
+hyprland() {
+  echo "==> Installing Hyprland"
+  sudo pacman -S --noconfirm --needed hyprland
+
+  echo "==> Installing packages that are needed for the rice..."
+  yay -S --noconfirm hyprshot fzf neovim cava kitty wallust \
+    xdg-desktop-portal-hyprland-git zsh ewwii zinit mpd mpc rmpc \
+    yt-dlp bc nerd-fonts vivaldi picom playerctl swww
+}
 
 echo "==> Cloning ZyXtArch repo..."
 cd "$HOME"
@@ -10,16 +39,7 @@ git clone https://github.com/zyxtyz/ZyXtArch >/dev/null 2>&1
 mkdir ~/.config >/dev/null 2>&1
 cp -r "$HOME/ZyXtArch" "$HOME/.config/zyxtarch" >/dev/null 2>&1
 
-echo "==> Creating bspwm-zyxtarch session file..."
-sudo mkdir -p /usr/share/xsessions/
-sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop > /dev/null <<'EOF'
-[Desktop Entry]
-Name=bspwm (zyxtarch)
-Comment=BSPWM - ZyxtArch
-Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
-Type=Application
-DesktopNames=bspwm
-EOF
+
 
 echo "==> Checking if paru is installed..."
 if command -v yay >/dev/null 2>&1; then
@@ -38,10 +58,7 @@ fi
 
 
 
-echo "==> Installing additional packages with paru..."
-yay -S --noconfirm flameshot fzf neovim cava kitty wallust-git \
-  xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
-  eww-git nushell zinit-git mpd mpc ncmpcpp yt-dlp bc nerd-fonts vivaldi picom
+
 
 echo "==> Setting up zsh..."
 touch ~/.zshrc
@@ -52,11 +69,9 @@ chsh -s /bin/zsh
 mkdir ~/Music
 
 echo "==> Fetching font .OTF and setting up font..."
-curl -L https://github.com/g5becks/Cartograph/blob/main/CartographCF-BoldItalic.otf -o $HOME
-rice font $HOME/CartographCF-BoldItalic.otf
-
-
-
+git clone https://github.com/g5becks/Cartograph.git ~/font
+rice font $HOME/font/CartographCF-BoldItalic.otf
+rm -rf $HOME/*
 
 
 echo "==> Cleaning..."

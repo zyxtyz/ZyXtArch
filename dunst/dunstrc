@@ -23,7 +23,7 @@ text_icon_padding = 10                  # Gap between icon and text
   
 ### Frame / Borders ###  
 frame_width = 2                         # Border thickness in pixels  
-frame_color = "#1D4952"              # Border color  
+frame_color = "#0E1E37"              # Border color  
   
 ### Icons ###  
 icon_position = left                    # Where to place icons: off|left|right  
@@ -74,9 +74,9 @@ force_xwayland = false                  # Force XWayland instead of Wayland back
 #############################################  
 [urgency_low]  
 timeout = 4                              # Auto-close time for low urgency notifications  
-background = "#170F0F"            # Background color  
-foreground = "#F0FAF2"            # Text color  
-frame_color = "#1D4952"               # Border color  
+background = "#1C1E23"            # Background color  
+foreground = "#F8F9F1"            # Text color  
+frame_color = "#0E1E37"               # Border color  
 default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-information.png  # Icon override  
   
 #############################################  
@@ -84,9 +84,9 @@ default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-information.png  # I
 #############################################  
 [urgency_normal]  
 timeout = 6                              # Auto-close time for normal urgency notifications  
-background = "#170F0F"            # Background color  
-foreground = "#F0FAF2"            # Text color  
-frame_color = "#796463"               # Border color  
+background = "#1C1E23"            # Background color  
+foreground = "#F8F9F1"            # Text color  
+frame_color = "#253C28"               # Border color  
 default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-warning.png      # Icon override  
   
 #############################################  
@@ -94,9 +94,9 @@ default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-warning.png      # I
 #############################################  
 [urgency_critical]  
 timeout = 0                              # Don't auto-close (0 = persistent)  
-background = "#F6638D"                # Background color  
-foreground = "#D4F1DB"                # Text color  
-frame_color = "#1D4952"               # Border color  
+background = "#906E52"                # Background color  
+foreground = "#EAEFD8"                # Text color  
+frame_color = "#0E1E37"               # Border color  
 default_icon = /usr/share/icons/Adwaita/32x32/status/dialog-error.png        # Icon override  
   
 #############################################  
@@ -127,9 +127,9 @@ timeout = 2                               # Short timeout
 # Highlight system monitor alerts  
 [rule_system_monitor]  
 summary = "Battery|CPU|RAM"               # Match summary using regex  
-foreground = "#F0FAF2"             # Text color override  
-background = "#170F0F"             # Background override  
-frame_color = "#796463"                # Frame override  
+foreground = "#F8F9F1"             # Text color override  
+background = "#1C1E23"             # Background override  
+frame_color = "#253C28"                # Frame override  
   
 # Hide specific messages  
 [rule_silent]  

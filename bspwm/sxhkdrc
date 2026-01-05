@@ -2,6 +2,11 @@
 # wm independent hotkeys
 #
 
+# Color Picker
+super + p
+    scolorpicker
+
+
 # terminal emulator
 super + Return
 	kitty
@@ -24,7 +29,7 @@ super + d
 
 # music player
 ctrl + shift + m
-	kitty zsh -c 'ncmpcpp'
+	kitty zsh -c 'rmpc -c ~/.config/zyxtarch/music/rmpc/config.ron'
 	
 
 # screenshot
@@ -58,6 +63,9 @@ super + f
 # toggle floating
 super + v
 	bspc node -t '~floating'
+
+super + t
+    bspc node -t tiled
 
 
 # focus the node in the given direction (arrow keys)

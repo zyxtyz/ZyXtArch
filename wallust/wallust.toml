@@ -61,3 +61,7 @@ target = "~/.config/zyxtarch/dunst/dunstrc"
 [templates.eww-scss]
 template = "colors-eww.scss"
 target = "~/.config/zyxtarch/ewwii/ewwii.scss"
+
+[templates.rmpc]
+template = "colors-rmpc.ron"
+target = "~/.config/zyxtarch/music/rmpc/theme.ron"
