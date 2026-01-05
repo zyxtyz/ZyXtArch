@@ -80,7 +80,7 @@ EOF
     yay -S --needed --noconfirm \
       flameshot fzf neovim cava kitty wallust \
       xdg-desktop-portal-wlr \
-      eww mpd mpc yt-dlp bc nerd-fonts \
+      ewwii mpd mpc yt-dlp bc nerd-fonts \
       picom playerctl
   fi
 
@@ -102,8 +102,8 @@ install_hyprland() {
     yay -S --needed --noconfirm \
       hyprshot fzf neovim cava kitty wallust \
       xdg-desktop-portal-hyprland \
-      eww mpd mpc yt-dlp bc nerd-fonts \
-      picom playerctl swww
+      ewwii mpd mpc yt-dlp bc nerd-fonts \
+       playerctl swww
   fi
 
   clone_config

@@ -2,5 +2,5 @@
 
 
 ## installation:
-``curl -fsSl https://raw.githubusercontent.com/zyxtyz/ZyXtArch/refs/heads/main/installRice.sh | sh``
+``curl -fsSl https://raw.githubusercontent.com/zyxtyz/ZyXtArch/refs/heads/main/installRice.sh | bash``
 
