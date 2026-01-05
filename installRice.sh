@@ -140,7 +140,7 @@ select wm in bspwm hyprland; do
       break
       ;;
     *)
-      echo "Invalid selection, choose hyprland or bspwm""
+      echo "Invalid selection, choose hyprland or bspwm"
       ;;
   esac
 done
