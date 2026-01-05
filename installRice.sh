@@ -1,149 +1,129 @@
-#!/bin/sh 
+#!/usr/bin/env bash
+set -e
+
+confirm() {
+  read -rp ">> $1 [y/N]: " choice
+  case "$choice" in
+    y|Y|yes|YES) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+ensure_yay() {
+  if command -v yay >/dev/null 2>&1; then
+    echo "==> yay already installed"
+  else
+    if confirm "yay is not installed. Install yay?"; then
+      sudo pacman -S --needed --noconfirm base-devel git
+      cd "$HOME"
+      git clone https://aur.archlinux.org/yay.git
+      cd yay
+      makepkg -si --noconfirm
+      cd "$HOME"
+      rm -rf yay
+    else
+      echo "==> yay is required. Exiting."
+      exit 1
+    fi
+  fi
+}
+
+setup_zsh() {
+  if confirm "Set up zsh and make it default shell?"; then
+    sudo pacman -S --needed --noconfirm zsh
+    mkdir -p ~/.config/zyxtarch
+    grep -q zyxtarch ~/.zshrc 2>/dev/null || \
+      echo 'source ~/.config/zyxtarch/zsh/.zshrc' >> ~/.zshrc
+    chsh -s /bin/zsh || true
+  fi
+}
+
+install_fonts() {
+  if confirm "Install Cartograph font?"; then
+    mkdir -p ~/.local/share/fonts
+    git clone https://github.com/g5becks/Cartograph.git /tmp/cartograph
+    cp /tmp/cartograph/*.otf ~/.local/share/fonts/
+    fc-cache -fv
+    rm -rf /tmp/cartograph
+  fi
+}
+
+clone_config() {
+  if confirm "Clone ZyXtArch config repo?"; then
+    mkdir -p ~/.config
+    [ -d "$HOME/.config/zyxtarch" ] || \
+      git clone https://github.com/zyxtyz/ZyXtArch ~/.config/zyxtarch
+  fi
+}
 
 install_bspwm() {
-  echo "==> Installing bspwm and required packages..."
-  sudo pacman -S --noconfirm --needed bspwm sxhkd feh
-  echo "==> Creating bspwm-zyxtarch session file..."
-  sudo mkdir -p /usr/share/xsessions/
-  sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop > /dev/null <<'EOF'
-  [Desktop Entry]
-  Name=bspwm (zyxtarch)
-  Comment=BSPWM - ZyxtArch
-  Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
-  Type=Application
-  DesktopNames=bspwm
+  echo "==> BSPWM selected"
+
+  if confirm "Install bspwm and required packages?"; then
+    sudo pacman -S --needed --noconfirm bspwm sxhkd feh xorg-server xorg-xinit
+  fi
+
+  if confirm "Create bspwm display manager session file?"; then
+    sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop >/dev/null <<'EOF'
+[Desktop Entry]
+Name=bspwm (ZyXtArch)
+Comment=BSPWM - ZyXtArch
+Exec=bspwm -c ~/.config/zyxtarch/bspwm/bspwmrc
+Type=Application
+DesktopNames=bspwm
 EOF
+  fi
 
-  echo "==> Installing additional packages with paru..."
-  yay -S --noconfirm flameshot fzf neovim cava kitty wallust \
-    xdg-desktop-portal-wlr-git xdg-utils xorg-init xorg-server zsh \
-    ewwii zinit mpd mpc rmpc yt-dlp bc nerd-fonts vivaldi picom \
-    playerctl
-  echo "==> Cloning ZyXtArch repo..."
-cd "$HOME"
+  ensure_yay
 
-git clone https://github.com/zyxtyz/ZyXtArch >/dev/null 2>&1
-mkdir ~/.config >/dev/null 2>&1
-cp -r "$HOME/ZyXtArch" "$HOME/.config/zyxtarch" >/dev/null 2>&1
+  if confirm "Install additional bspwm rice packages?"; then
+    yay -S --needed --noconfirm \
+      flameshot fzf neovim cava kitty wallust \
+      xdg-desktop-portal-wlr \
+      eww mpd mpc yt-dlp bc nerd-fonts \
+      picom playerctl
+  fi
 
-
-
-echo "==> Checking if paru is installed..."
-if command -v yay >/dev/null 2>&1; then
-  echo "Installed!"
-else
-  echo "==> Yay not installed.."
-  echo "==> Installing Yay (AUR helper)..."
-  sudo pacman -S --noconfirm --needed base-devel
-  cd "$HOME"
-  git clone https://aur.archlinux.org/yay.git
-  cd yay
-  makepkg -si --noconfirm >/dev/null 2>&1
-  cd "$HOME"
-  rm -rf yay 
-fi
-
-
-
-
-
-echo "==> Setting up zsh..."
-touch ~/.zshrc
-echo "source ~/.config/zyxtarch/zsh/.zshrc" > ~/.zshrc
-chsh -s /bin/zsh
-
-
-mkdir ~/Music
-
-echo "==> Fetching font .OTF and setting up font..."
-git clone https://github.com/g5becks/Cartograph.git ~/font
-rice font $HOME/font/CartographCF-BoldItalic.otf
-rm -rf $HOME/*
-
-
-echo "==> Cleaning..."
-rm -rf $HOME/*
-mkdir $HOME/{Music,Downloads}
-echo "==> Setup complete! Rebooting system..."
-sudo reboot
-
+  clone_config
+  setup_zsh
+  install_fonts
 }
 
 install_hyprland() {
-  echo "==> Installing Hyprland"
-  sudo pacman -S --noconfirm --needed hyprland
+  echo "==> Hyprland selected"
 
-  echo "==> Installing packages that are needed for the rice..."
-  yay -S --noconfirm hyprshot fzf neovim cava kitty wallust \
-    xdg-desktop-portal-hyprland-git zsh ewwii zinit mpd mpc rmpc \
-    yt-dlp bc nerd-fonts vivaldi picom playerctl swww
+  if confirm "Install Hyprland?"; then
+    sudo pacman -S --needed --noconfirm hyprland
+  fi
 
-  echo "==> Cloning ZyXtArch repo..."
-cd "$HOME"
+  ensure_yay
 
-git clone https://github.com/zyxtyz/ZyXtArch >/dev/null 2>&1
-mkdir ~/.config >/dev/null 2>&1
-cp -r "$HOME/ZyXtArch" "$HOME/.config/zyxtarch" >/dev/null 2>&1
+  if confirm "Install additional Hyprland rice packages?"; then
+    yay -S --needed --noconfirm \
+      hyprshot fzf neovim cava kitty wallust \
+      xdg-desktop-portal-hyprland \
+      eww mpd mpc yt-dlp bc nerd-fonts \
+      picom playerctl swww
+  fi
 
-
-
-echo "==> Checking if paru is installed..."
-if command -v yay >/dev/null 2>&1; then
-  echo "Installed!"
-else
-  echo "==> Yay not installed.."
-  echo "==> Installing Yay (AUR helper)..."
-  sudo pacman -S --noconfirm --needed base-devel
-  cd "$HOME"
-  git clone https://aur.archlinux.org/yay.git
-  cd yay
-  makepkg -si --noconfirm >/dev/null 2>&1
-  cd "$HOME"
-  rm -rf yay 
-fi
-
-
-
-
-
-echo "==> Setting up zsh..."
-touch ~/.zshrc
-echo "source ~/.config/zyxtarch/zsh/.zshrc" > ~/.zshrc
-chsh -s /bin/zsh
-
-
-mkdir ~/Music
-
-echo "==> Fetching font .OTF and setting up font..."
-git clone https://github.com/g5becks/Cartograph.git ~/font
-rice font $HOME/font/CartographCF-BoldItalic.otf
-rm -rf $HOME/*
-
-
-echo "==> Cleaning..."
-rm -rf $HOME/*
-mkdir $HOME/{Music,Downloads}
-echo "==> Setup complete! Rebooting system..."
-sudo reboot
+  clone_config
+  setup_zsh
+  install_fonts
 }
 
-
-echo "What WM do you want?"
+echo "Select your Window Manager:"
 echo "1) bspwm"
 echo "2) hyprland"
-printf "Selection: "
-read wm
+read -rp "Selection: " wm
 
 case "$wm" in
-  1|bspwm)
-    install_bspwm
-    ;;
-  2|hyprland)
-    install_hyprland
-    ;;
-  *)
-    echo "Invalid selection"
-    ;;
+  1|bspwm) install_bspwm ;;
+  2|hyprland) install_hyprland ;;
+  *) echo "Invalid selection"; exit 1 ;;
 esac
 
+if confirm "Reboot system now?"; then
+  sudo reboot
+fi
 
+echo "==> Installation finished."
