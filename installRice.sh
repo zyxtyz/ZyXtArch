@@ -129,6 +129,7 @@ sudo reboot
 
 
 echo "What WM do you want?"
+read wm
 select wm in bspwm hyprland; do
   case $wm in
     bspwm)
