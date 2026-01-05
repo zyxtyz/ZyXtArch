@@ -129,6 +129,9 @@ sudo reboot
 
 
 echo "What WM do you want?"
+echo "hyprland"
+echo "bspwm"
+echo "selection >>>" 
 read wm
 select wm in bspwm hyprland; do
   case $wm in
