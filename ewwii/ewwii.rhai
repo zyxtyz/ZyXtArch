@@ -80,13 +80,16 @@ enter([
         cmd: "scripts/wifi_detect",
         interval: "400ms",
         initial: "󰤨 󰈀 Loading...",
-    }),     
+    }),
+    poll("display_server", #{  
+    interval: "3000ms",  
+    cmd: "if [ '$XDG_SESSION_TYPE' = 'wayland' ] || [ -n '$WAYLAND_DISPLAY' ] && [ '$XDG_SESSION_TYPE' != 'x11' ]; then echo 'wayland'; else echo 'x11'; fi",  
+    initial: "wayland",
+    }),       
           
     defwindow("zewwiir", #{      
-        monitor: 0,      
-        windowtype: "desktop",      
-        stacking: "bg",    
-        wm_ignore: false,      
+        monitor: 0,            
+        stacking: "fg",        
         geometry: #{      
             x: "0%",      
             y: "2px",      
@@ -94,10 +97,16 @@ enter([
             height: "35px",      
             anchor: "top center"      
         },      
-        exclusive: true,      
-        resizable: true,      
-        reserve: #{ distance: "40px", side: "top" }  , 
-        class: "zewwiir"
+        
+        // Wayland options (evaluated conditionally)  
+        exclusive: if display_server == "wayland" { true } else { false },  
+        focusable: if display_server == "wayland" { "ondemand" } else { "none" },  
+        namespace: if display_server == "wayland" { "my_layer_shell" } else { "" },  
+      
+        // X11 options (evaluated conditionally)  
+        windowtype: if display_server == "x11" { "desktop" } else { "normal" },  
+        reserve: if display_server == "x11" { #{ side: "top", distance: "34px" } } else { #{ side: "top", distance: "0px" } },  
+        wm_ignore: if display_server == "x11" { true } else { false }, 
     }, bar(cava_data, wifi_data))  
 ])
                                                                                                       
