@@ -127,7 +127,7 @@ EOF
   install_yay_packages \
     flameshot fzf neovim cava kitty wallust \
     xdg-desktop-portal-wlr \
-    ewwii-bin mpd mpc yt-dlp bc nerd-fonts \
+    aylurs-gtk-shell-git mpd mpc yt-dlp bc nerd-fonts \
     picom playerctl mpd-mpris
 
   clone_config
@@ -150,7 +150,7 @@ ls
   install_yay_packages \
     hyprshot fzf neovim cava kitty wallust \
     xdg-desktop-portal-hyprland \
-    ewwii-bin mpd mpc yt-dlp bc nerd-fonts \
+    aylurs-gtk-shell-git mpd mpc yt-dlp bc nerd-fonts \
     playerctl swww mpd-mpris
 
   if confirm "Create Hyprland Wayland session file?"; then
