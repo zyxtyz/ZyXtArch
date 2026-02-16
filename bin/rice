@@ -13,7 +13,7 @@
 #
 # =====================================================================
 
-ZYXTARCH_DIR="$HOME/.config/zyxtarch"
+ZYXTARCH_DIR="/home/$USER/.config/zyxtarch"
 [ -f "$ZYXTARCH_DIR/colors/colors.sh" ] && source "$ZYXTARCH_DIR"/colors/colors.sh
 
 # ---------------------------------------------------------------------
@@ -25,16 +25,18 @@ edit() {
 1) EWW
 2) BSPWM
 3) ZSH
+4) HYPRLAND
 ================================================
 EOF
 
 	read -p "> " answer
 
 	case "$answer" in
-		1) nvim "$ZYXTARCH_DIR/eww" ;;
-		2) nvim "$ZYXTARCH_DIR/bspwm" ;;
-		3) nvim "$ZYXTARCH_DIR/zsh" ;;
-		*) nvim "$ZYXTARCH_DIR" ;;
+		1) cd "$ZYXTARCH_DIR/eww" && ls ;;
+		2) cd "$ZYXTARCH_DIR/bspwm" && ls ;;
+		3) cd "$ZYXTARCH_DIR/zsh" && ls ;;
+		4) cd "$ZYXTARCH_DIR/hyprland" && ls;;
+		*) cd "$ZYXTARCH_DIR" && ls ;;
 	esac
 }
 
@@ -66,12 +68,20 @@ applywal() {
         echo "❌ File not found: $image"
         return 1
     fi
+    if [ $XDG_SESSION_TYPE == "wayland" ]; then
+	    swww img $image -t grow --transition-fps 120 --transition-duration 1
+	    wallust run $image --config-dir "$ZYXTARCH_DIR/wallust"
+    elif [ $XDG_SESSION_TYPE == "x11" ]; then
+	    feh --bg-fill $image
+	    wallust run $image --config-dir "$ZYXTARCH_DIR/wallust"
+	    bspc config normal_border_color "$color1"
+	    bspc config active_border_color "$color2"
+	    bspc config focused_border_color "$color15"
+    fi
+
 
     WALLUST_CONFIG="$ZYXTARCH_DIR/wallust"
-    WALLUST_COLORS="$WALLUST_CONFIG/colors"
-
-    feh --bg-fill "$image"
-    wallust run "$image" -d "$WALLUST_CONFIG"
+    WALLUST_COLORS="$ZYXTARCH_DIR/colors"
 
     if [ -f "$WALLUST_COLORS" ]; then
         source "$WALLUST_COLORS"
@@ -79,10 +89,6 @@ applywal() {
         echo "❌ Wallust color file missing"
         return 1
     fi
-
-    bspc config normal_border_color "$color1"
-    bspc config active_border_color "$color2"
-    bspc config focused_border_color "$color15"
 
     ewwii reload -c "$ZYXTARCH_DIR/ewwii"
 

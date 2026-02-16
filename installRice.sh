@@ -128,7 +128,7 @@ EOF
     flameshot fzf neovim cava kitty wallust \
     xdg-desktop-portal-wlr \
     ewwii-bin mpd mpc yt-dlp bc nerd-fonts \
-    picom playerctl
+    picom playerctl mpd-mpris
 
   clone_config
   setup_zsh
@@ -151,7 +151,7 @@ ls
     hyprshot fzf neovim cava kitty wallust \
     xdg-desktop-portal-hyprland \
     ewwii-bin mpd mpc yt-dlp bc nerd-fonts \
-    playerctl swww
+    playerctl swww mpd-mpris
 
   if confirm "Create Hyprland Wayland session file?"; then
     sudo tee /usr/share/wayland-sessions/hyprland-zyxtarch.desktop >/dev/null <<'EOF'

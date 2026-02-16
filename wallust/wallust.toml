@@ -19,7 +19,7 @@
 #    cursor
 #    wallpaper
 
-backend = "full"
+backend = "thumb"
 color_space = "lch"
 
 [templates.colors]

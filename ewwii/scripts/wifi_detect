@@ -20,7 +20,7 @@ for iface in /sys/class/net/*; do
     [ -d "/sys/class/net/$iface/wireless" ] && continue
 
     if [ "$(cat /sys/class/net/$iface/operstate 2>/dev/null)" = "up" ]; then
-        echo "${ETH_ICON} ${iface}"
+        echo "${ETH_ICON}  ${iface}"
         exit
     fi
 done

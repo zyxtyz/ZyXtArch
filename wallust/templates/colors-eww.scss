@@ -1,5 +1,6 @@
 $wallpaper: "{{wallpaper}}";
 $background: {{background}};
+$background_hover: {{background | lighten(0.3)}}
 $foreground: {{foreground}};
 $cursor: {{cursor}};
 
