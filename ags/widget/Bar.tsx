@@ -7,6 +7,7 @@ import Tray from "gi://AstalTray"
 import Network from "gi://AstalNetwork"
 import Notifd from "gi://AstalNotifd"
 import Cava from "gi://AstalCava"
+import Colors from "../source/colors-ags"
 
 
 
@@ -27,9 +28,10 @@ export default function Bar() {
       name="bar"
       widthRequest={1900}
       heightRequest={35}
-      css="margin-top: 5px;"
+      css="margin-to: 5px;"
     >  
       <centerbox orientation={Gtk.Orientation.HORIZONTAL}>
+        backgroundColor={Colors.colors.background}
     <box 
         $type="start"
 

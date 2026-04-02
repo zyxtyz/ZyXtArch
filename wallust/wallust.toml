@@ -58,9 +58,9 @@ target = "~/.config/zyxtarch/colors/colors.scss"
 template = "dunstrc"
 target = "~/.config/zyxtarch/dunst/dunstrc"
 
-[templates.eww-scss]
-template = "colors-eww.scss"
-target = "~/.config/zyxtarch/ewwii/ewwii.scss"
+[templates.ags-color]
+template = "colors-ags.tsx"
+target = "~/.config/zyxtarch/ags/source/colors-ags.tsx"
 
 [templates.rmpc]
 template = "colors-rmpc.ron"
