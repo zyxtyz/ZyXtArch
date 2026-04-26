@@ -1,24 +1,24 @@
 :root {
-    --wallpaper: "/home/zyxtyz/.config/zyxtarch/wallpapers/black_box.png";
-    --background: #0D0000;
-    --cursor: #D0A498;
-    --foreground: #FADBD4
+    --wallpaper: "/home/zyxtyz/.config/zyxtarch/wallpapers/leaves.jpg";
+    --background: #20211E;
+    --cursor: #958074;
+    --foreground: #D9D3CD
 
-    --color0: #221B18;
-    --color1: #805546;
-    --color2: #A66D5D;
-    --color3: #B87967;
-    --color4: #CB8673;
-    --color5: #D88F7C;
-    --color6: #F09983;
-    --color7: #EFC4B9;
+    --color0: #464744;
+    --color1: #1D2217;
+    --color2: #512D1C;
+    --color3: #374340;
+    --color4: #6A4E38;
+    --color5: #646152;
+    --color6: #92806F;
+    --color7: #C0B7AE;
 
-    --color8: #A78981;
-    --color9: #805546;
-    --color10: #A66D5D;
-    --color11: #B87967;
-    --color12: #CB8673;
-    --color13: #D88F7C;
-    --color14: #F09983;
-    --color15: #EFC4B9;
+    --color8: #86807A;
+    --color9: #1D2217;
+    --color10: #512D1C;
+    --color11: #374340;
+    --color12: #6A4E38;
+    --color13: #646152;
+    --color14: #92806F;
+    --color15: #C0B7AE;
 }

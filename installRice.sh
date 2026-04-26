@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # ------------------------
 # Helper functions
@@ -14,11 +14,12 @@ confirm() {
 }
 
 is_installed() {
-  pacman -Qi "$1" &>/dev/null
+  pacman -Q "$1" &>/dev/null
 }
 
 install_pacman_packages() {
   local pkgs=()
+
   for pkg in "$@"; do
     if is_installed "$pkg"; then
       echo "==> $pkg already installed"
@@ -27,18 +28,37 @@ install_pacman_packages() {
     fi
   done
 
-  if [ "${#pkgs[@]}" -gt 0 ]; then
-    echo "==> Installing missing pacman packages: ${pkgs[*]}"
+  if [ ${#pkgs[@]} -gt 0 ]; then
+    echo "==> Installing pacman packages: ${pkgs[*]}"
     sudo pacman -S --needed --noconfirm "${pkgs[@]}"
   else
     echo "==> All pacman packages already installed"
   fi
 }
 
+ensure_yay() {
+  if command -v yay >/dev/null 2>&1; then
+    echo "==> yay already installed"
+    return
+  fi
+
+  echo "==> Installing yay (AUR helper)..."
+  install_pacman_packages base-devel git
+
+  cd "$HOME"
+  rm -rf yay
+  git clone https://aur.archlinux.org/yay.git
+  cd yay
+  makepkg -si --noconfirm
+  cd "$HOME"
+  rm -rf yay
+}
+
 install_yay_packages() {
   ensure_yay
 
   local pkgs=()
+
   for pkg in "$@"; do
     if is_installed "$pkg"; then
       echo "==> $pkg already installed"
@@ -47,92 +67,45 @@ install_yay_packages() {
     fi
   done
 
-  if [ "${#pkgs[@]}" -gt 0 ]; then
-    echo "==> Installing missing AUR packages: ${pkgs[*]}"
+  if [ ${#pkgs[@]} -gt 0 ]; then
+    echo "==> Installing AUR packages: ${pkgs[*]}"
     yay -S --needed --noconfirm "${pkgs[@]}"
   else
     echo "==> All AUR packages already installed"
   fi
 }
 
-ensure_yay() {
-  if command -v yay >/dev/null 2>&1; then
-    echo "==> yay already installed"
-  else
-    if confirm "yay is not installed. Install yay?"; then
-      install_pacman_packages base-devel git
-      cd "$HOME"
-      git clone https://aur.archlinux.org/yay.git
-      cd yay
-      makepkg -si --noconfirm
-      cd "$HOME"
-      rm -rf yay
-    else
-      echo "==> yay is required. Exiting."
-      exit 1
-    fi
-  fi
-}
+# ------------------------
+# ZSH setup
+# ------------------------
 
 setup_zsh() {
-  if confirm "Set up zsh and make it default shell?"; then
+  if confirm "Install and configure Zsh?"; then
     install_pacman_packages zsh
+
     mkdir -p ~/.config/zyxtarch
-    grep -q zyxtarch ~/.zshrc 2>/dev/null || \
+
+    if ! grep -q "zyxtarch" ~/.zshrc 2>/dev/null; then
       echo 'source ~/.config/zyxtarch/zsh/.zshrc' >> ~/.zshrc
+    fi
+
     chsh -s /bin/zsh || true
   fi
 }
 
-install_fonts() {
-  if confirm "Install Cartograph font?"; then
-    mkdir -p ~/.local/share/fonts
-    git clone https://github.com/g5becks/Cartograph.git /tmp/cartograph
-    cp /tmp/cartograph/*.otf ~/.local/share/fonts/
-    fc-cache -fv
-    rm -rf /tmp/cartograph
-  fi
-}
+# ------------------------
+# Config clone
+# ------------------------
 
 clone_config() {
-  if confirm "Clone ZyXtArch config repo?"; then
-    mkdir -p ~/.config
-    [ -d "$HOME/.config/zyxtarch" ] || \
-      git clone https://github.com/zyxtyz/ZyXtArch ~/.config/zyxtarch
+  mkdir -p ~/.config
+
+  if [ ! -d "$HOME/.config/zyxtarch" ]; then
+    echo "==> Cloning ZyXtArch config..."
+    git clone https://github.com/zyxtyz/ZyXtArch ~/.config/zyxtarch
+  else
+    echo "==> Config already exists, skipping clone"
   fi
-}
-
-# ------------------------
-# Install BSPWM
-# ------------------------
-
-install_bspwm() {
-  echo "==> BSPWM selected"
-
-  if confirm "Install bspwm and required packages?"; then
-    install_pacman_packages bspwm sxhkd feh xorg-server xorg-xinit
-  fi
-
-  if confirm "Create bspwm display manager session file?"; then
-    sudo tee /usr/share/xsessions/bspwm-zyxtarch.desktop >/dev/null <<'EOF'
-[Desktop Entry]
-Name=BSPWM (ZyXtArch)
-Comment=BSPWM - ZyXtArch
-Exec=bspwm -c /home/$USER/.config/zyxtarch/bspwm/bspwmrc
-Type=Application
-DesktopNames=bspwm
-EOF
-  fi
-
-  install_yay_packages \
-    flameshot fzf neovim cava kitty wallust \
-    xdg-desktop-portal-wlr \
-    aylurs-gtk-shell-git mpd mpc yt-dlp bc nerd-fonts \
-    picom playerctl mpd-mpris
-
-  clone_config
-  setup_zsh
-  install_fonts
 }
 
 # ------------------------
@@ -140,49 +113,31 @@ EOF
 # ------------------------
 
 install_hyprland() {
-  echo "==> Hyprland selected"
-ls
-
-  if confirm "Install Hyprland?"; then
-    install_pacman_packages hyprland
-  fi
+  echo "==> Hyprland setup"
+  install_pacman_packages \
+    waybar wl-clipboard grim slurp polkit-kde-agent
 
   install_yay_packages \
     hyprshot fzf neovim cava kitty wallust \
     xdg-desktop-portal-hyprland \
     aylurs-gtk-shell-git mpd mpc yt-dlp bc nerd-fonts \
     playerctl swww mpd-mpris
-
-  if confirm "Create Hyprland Wayland session file?"; then
-    sudo tee /usr/share/wayland-sessions/hyprland-zyxtarch.desktop >/dev/null <<'EOF'
+    sudo tee /usr/share/wayland-sessions/hyprland-zyxtarch.desktop >/dev/null <<EOF
 [Desktop Entry]
 Name=Hyprland (ZyXtArch)
 Comment=Hyprland - ZyXtArch
 Exec=Hyprland
 Type=Application
 EOF
-  fi
-
   clone_config
   setup_zsh
-  install_fonts
 }
 
 # ------------------------
-# Main menu
+# Start installation
 # ------------------------
 
-echo "Select your Window Manager:"
-echo "1) bspwm"
-echo "2) hyprland"
-read -rp "Selection: " wm
-wm="$(echo "$wm" | tr -d '[:space:]')"
-
-case "$wm" in
-  1|bspwm|BSPWM) install_bspwm ;;
-  2|hyprland|HYPRLAND) install_hyprland ;;
-  *) echo "Invalid selection"; exit 1 ;;
-esac
+install_hyprland
 
 if confirm "Reboot system now?"; then
   sudo reboot

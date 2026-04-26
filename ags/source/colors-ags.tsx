@@ -1,50 +1,50 @@
 export const colors = {  
   // Wallust template placeholders  
-  background: "#0D0000",  
-  foreground: "#FADBD4",  
-  wallpaper: "/home/zyxtyz/.config/zyxtarch/wallpapers/black_box.png",  
-  cursor: "#D0A498",  
+  background: "#20211E",  
+  foreground: "#D9D3CD",  
+  wallpaper: "/home/zyxtyz/.config/zyxtarch/wallpapers/leaves.jpg",  
+  cursor: "#958074",  
     
   // Color palette (color0 to color15)  
-  color0: "#221B18",   // black  
-  color1: "#805546",   // red  
-  color2: "#A66D5D",   // green  
-  color3: "#B87967",   // yellow  
-  color4: "#CB8673",   // blue  
-  color5: "#D88F7C",   // magenta  
-  color6: "#F09983",   // cyan  
-  color7: "#EFC4B9",   // white  
-  color8: "#A78981",   // bright black  
-  color9: "#805546",   // bright red  
-  color10: "#A66D5D", // bright green  
-  color11: "#B87967", // bright yellow  
-  color12: "#CB8673", // bright blue  
-  color13: "#D88F7C", // bright magenta  
-  color14: "#F09983", // bright cyan  
-  color15: "#EFC4B9", // bright white  
+  color0: "#464744",   // black  
+  color1: "#1D2217",   // red  
+  color2: "#512D1C",   // green  
+  color3: "#374340",   // yellow  
+  color4: "#6A4E38",   // blue  
+  color5: "#646152",   // magenta  
+  color6: "#92806F",   // cyan  
+  color7: "#C0B7AE",   // white  
+  color8: "#86807A",   // bright black  
+  color9: "#1D2217",   // bright red  
+  color10: "#512D1C", // bright green  
+  color11: "#374340", // bright yellow  
+  color12: "#6A4E38", // bright blue  
+  color13: "#646152", // bright magenta  
+  color14: "#92806F", // bright cyan  
+  color15: "#C0B7AE", // bright white  
 }  
   
 // CSS variables template for wallust processing  
 export const cssVariables = `  
-  @define-color background #0D0000;  
-  @define-color foreground #FADBD4;  
-  @define-color wallpaper /home/zyxtyz/.config/zyxtarch/wallpapers/black_box.png;  
-  @define-color cursor #D0A498;  
+  @define-color background #20211E;  
+  @define-color foreground #D9D3CD;  
+  @define-color wallpaper /home/zyxtyz/.config/zyxtarch/wallpapers/leaves.jpg;  
+  @define-color cursor #958074;  
     
-  @define-color color0 #221B18;  
-  @define-color color1 #805546;  
-  @define-color color2 #A66D5D;  
-  @define-color color3 #B87967;  
-  @define-color color4 #CB8673;  
-  @define-color color5 #D88F7C;  
-  @define-color color6 #F09983;  
-  @define-color color7 #EFC4B9;  
-  @define-color color8 #A78981;  
-  @define-color color9 #805546;  
-  @define-color color10 #A66D5D;  
-  @define-color color11 #B87967;  
-  @define-color color12 #CB8673;  
-  @define-color color13 #D88F7C;  
-  @define-color color14 #F09983;  
-  @define-color color15 #EFC4B9;  
+  @define-color color0 #464744;  
+  @define-color color1 #1D2217;  
+  @define-color color2 #512D1C;  
+  @define-color color3 #374340;  
+  @define-color color4 #6A4E38;  
+  @define-color color5 #646152;  
+  @define-color color6 #92806F;  
+  @define-color color7 #C0B7AE;  
+  @define-color color8 #86807A;  
+  @define-color color9 #1D2217;  
+  @define-color color10 #512D1C;  
+  @define-color color11 #374340;  
+  @define-color color12 #6A4E38;  
+  @define-color color13 #646152;  
+  @define-color color14 #92806F;  
+  @define-color color15 #C0B7AE;  
 `  

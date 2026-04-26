@@ -19,8 +19,8 @@
 #    cursor
 #    wallpaper
 
-backend = "thumb"
-color_space = "lch"
+backend = "wal"
+color_space = "lchmixed"
 
 [templates.colors]
 template = "colors"
